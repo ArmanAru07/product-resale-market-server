@@ -37,13 +37,20 @@ async function run(){
         })
         
         //category products
-        app.get('/products/:categoryID', async(req,res)=>{
-            const id=req.params.id;
-            const query = {}
+        app.get('/products/:name', async(req,res)=>{
+            const name=req.params.name;
+            const query = {categoryName:name}
             const cursor = productsCollection.find(query);
             const products = await cursor.toArray();
             console.log(products);
             res.send(products);
+        })
+
+        //users 
+        app.post('/users', async(req, res) =>{
+            const user = req.body;
+            const result = await usersCollection.insertOne(user);
+            res.send(result);
         })
     }
     finally{

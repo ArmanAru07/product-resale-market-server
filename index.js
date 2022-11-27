@@ -62,6 +62,15 @@ async function run(){
             const result = await bookingsCollection.insertOne(bookings);
             res.send(result);
         })
+
+        //add product
+        app.post('/add-product', async(req,res)=>{
+            const product=req.body;
+
+            const result=await productsCollection.insertOne(product);
+            console.log(result);
+            res.send(result);   
+      })
     }
     finally{
 

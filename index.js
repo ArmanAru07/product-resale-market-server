@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 
 const app = express()
@@ -68,16 +68,15 @@ async function run(){
             const products = await productsCollection.find(query).toArray();
             res.send(products);
         })
+
         
         // category products
-        app.get('/products/:name', async(req,res)=>{
-            const name=req.params.name;
-            console.log(name);
-            const query = {categoryName:'YAMAHA'}
-            const cursor = productsCollection.find(query);
-            const products = await cursor.toArray();
-            res.send(products);
-        })
+       app.get('/motorcycle/:categoryName', async (req,res)=>{
+        const categoryName = req.params.categoryName;
+        const query={categoryName};
+        const result= await productsCollection.find(query).toArray();
+        res.send(result)
+       })
 
         // app.get('/products/:id',async (req,res)=>{
 

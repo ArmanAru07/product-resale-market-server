@@ -23,6 +23,13 @@ async function run(){
         const usersCollection = client.db('resale-product').collection('user');
         const bookingsCollection = client.db('resale-product').collection('booking');
 
+        //all buyers
+        app.get('/all-buyers', async(req, res)=>{
+            const userCategory =req.query.userCategory;
+            const query = {userCategory: userCategory};
+            const buyers = await usersCollection.find(query).toArray();
+            res.send(buyers);
+        })
         //category..
         app.get('/category', async(req, res) =>{
             const query = {}
@@ -37,21 +44,38 @@ async function run(){
             const products = await cursor.toArray();
             res.send(products);
         })
-        
-        //category products
-        app.get('/products/:name', async(req,res)=>{
-            const name=req.params.name;
-            const query = {categoryName:name}
-            const cursor = productsCollection.find(query);
-            const products = await cursor.toArray();
-            console.log(products);
+        //my product
+        app.get('/products/:email', async(req, res)=>{
+            const email =req.params.email;
+            console.log(email);
+            const query = {email: email};
+            const products = await productsCollection.find(query).toArray();
             res.send(products);
         })
+        
+        // category products
+        app.get('/products/:name', async(req,res)=>{
+            const name=req.params.name;
+            console.log(name);
+            const query = {categoryName:'YAMAHA'}
+            const cursor = productsCollection.find(query);
+            const products = await cursor.toArray();
+            res.send(products);
+        })
+
+        // app.get('/products/:id',async (req,res)=>{
+
+        //     const id=req.params.id;
+        //     const query={_id:Object(id) }
+
+        //         const result=await productsCollection.find(query).toArray();
+        //         console.log(result);
+        //         res.send(result);
+        // })
 
         //users 
         app.post('/users', async(req, res) =>{
             const user = req.body;
-            console.log(user);
             const result = await usersCollection.insertOne(user);
             res.send(result);
         })
@@ -59,8 +83,9 @@ async function run(){
         //bookings
         app.post('/bookings', async(req, res) =>{
             const bookings = req.body
-            console.log(bookings);
+            console.log(bookings);  
             const result = await bookingsCollection.insertOne(bookings);
+            console.log(result);
             res.send(result);
         })
         app.get('/booking', async(req, res)=>{
@@ -69,6 +94,13 @@ async function run(){
             const bookings = await bookingsCollection.find(query).toArray();
             res.send(bookings);
         })
+        app.delete('/booking/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await bookingsCollection.deleteOne(query);
+            res.send(result);
+        });
+
 
         //add product
         app.post('/add-product', async(req,res)=>{

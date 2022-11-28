@@ -39,6 +39,13 @@ async function run(){
             const sellers = await usersCollection.find(query).toArray();
             res.send(sellers);
         })
+        //delete
+        app.delete('/UserInfo/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await userInfo.deleteOne(query);
+            res.send(result);
+        });
         //category..
         app.get('/category', async(req, res) =>{
             const query = {}

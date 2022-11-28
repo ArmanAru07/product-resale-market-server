@@ -26,9 +26,18 @@ async function run(){
         //all buyers
         app.get('/all-buyers', async(req, res)=>{
             const userCategory =req.query.userCategory;
+            console.log(userCategory);
             const query = {userCategory: userCategory};
             const buyers = await usersCollection.find(query).toArray();
             res.send(buyers);
+        })
+        //all sellers
+        app.get('/all-sellers', async(req, res)=>{
+            const userCategory =req.query.userCategory;
+            console.log(userCategory);
+            const query = {userCategory: userCategory};
+            const sellers = await usersCollection.find(query).toArray();
+            res.send(sellers);
         })
         //category..
         app.get('/category', async(req, res) =>{

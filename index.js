@@ -51,6 +51,7 @@ async function run(){
         //users 
         app.post('/users', async(req, res) =>{
             const user = req.body;
+            console.log(user);
             const result = await usersCollection.insertOne(user);
             res.send(result);
         })
@@ -61,6 +62,12 @@ async function run(){
             console.log(bookings);
             const result = await bookingsCollection.insertOne(bookings);
             res.send(result);
+        })
+        app.get('/booking', async(req, res)=>{
+            const email =req.query.email;
+            const query = {email: email};
+            const bookings = await bookingsCollection.find(query).toArray();
+            res.send(bookings);
         })
 
         //add product
